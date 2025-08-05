@@ -16,7 +16,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    minify: "terser",
+    minify: "terser", // Or 'esbuild' if you prefer not to install terser
     terserOptions: {
       compress: {
         drop_console: true,
