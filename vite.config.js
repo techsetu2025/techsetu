@@ -16,21 +16,15 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    minify: "terser", // Or 'esbuild' if you prefer not to install terser
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    assetsDir: "assets",
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
           router: ["react-router-dom"],
-          ui: ["@radix-ui/react-accordion", "@radix-ui/react-toast", "@radix-ui/react-tooltip"],
         },
       },
     },
   },
+  base: "/",
 })
