@@ -14,19 +14,11 @@ export default defineConfig({
     assetsDir: "assets",
     sourcemap: false,
     minify: "esbuild",
-    target: "es2015",
     rollupOptions: {
       output: {
         manualChunks: undefined,
-        chunkFileNames: "assets/[name]-[hash].js",
-        entryFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
   },
-  base: "./",
-  server: {
-    host: true,
-    port: 8080,
-  },
+  base: "/",
 })
