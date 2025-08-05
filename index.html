@@ -2,37 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tech Setu - Modern 3D Navigation</title>
     <meta name="description" content="Tech Setu IT Company - Modern 3D Navigation Effects" />
-    <meta name="author" content="Tech Setu" />
-
-    <meta property="og:title" content="Tech Setu - Modern 3D Navigation" />
-    <meta property="og:description" content="Tech Setu IT Company - Modern 3D Navigation Effects" />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/src/index.css" as="style" />
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     
-    <!-- Fallback for no-js -->
-    <noscript>
-      <style>
-        body {
-          font-family: system-ui, -apple-system, sans-serif;
-          padding: 2rem;
-          text-align: center;
-        }
-      </style>
-    </noscript>
-  </head>
-
-  <body>
-    <div id="root">
-      <!-- Loading fallback -->
-      <div style="
+    <style>
+      /* Critical CSS for loading state */
+      #root {
+        min-height: 100vh;
+        background: #0a0a0a;
+      }
+      
+      .loading-fallback {
         position: fixed;
         top: 0;
         left: 0;
@@ -44,29 +29,41 @@
         justify-content: center;
         color: white;
         font-family: system-ui, -apple-system, sans-serif;
-      ">
+        z-index: 9999;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #333;
+        border-top: 3px solid #8b5cf6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Hide loading when React loads */
+      .app-loaded .loading-fallback {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="loading-fallback">
         <div style="text-align: center;">
-          <div style="
-            width: 40px;
-            height: 40px;
-            border: 3px solid #333;
-            border-top: 3px solid #8b5cf6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-          "></div>
+          <div class="loading-spinner"></div>
           <p>Loading Tech Setu...</p>
         </div>
       </div>
     </div>
     
-    <script type="module" src="/src/main.jsx"></script>
-    
-    <style>
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    </style>
+    <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>

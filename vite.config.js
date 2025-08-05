@@ -3,10 +3,6 @@ import react from "@vitejs/plugin-react-swc"
 import path from "path"
 
 export default defineConfig({
-  server: {
-    host: "::",
-    port: 8080,
-  },
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,16 +11,22 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-    sourcemap: false,
     assetsDir: "assets",
+    sourcemap: false,
+    minify: "esbuild",
+    target: "es2015",
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          router: ["react-router-dom"],
-        },
+        manualChunks: undefined,
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
   },
-  base: "/",
+  base: "./",
+  server: {
+    host: true,
+    port: 8080,
+  },
 })
