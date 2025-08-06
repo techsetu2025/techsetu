@@ -120,7 +120,7 @@ const Navigation3D = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-3">
                 {navItems.map((item) => (
                   <div
                     key={item.label}
@@ -131,7 +131,7 @@ const Navigation3D = () => {
                     <button
                       onClick={() => handleNavigation(item.href)}
                       className={`
-                        group relative px-4 py-2 rounded-lg font-medium text-sm
+                        group relative px-5 py-2 rounded-lg font-medium text-sm
                         transition-all duration-300 ease-in-out
                         flex items-center space-x-2
                         transform hover:scale-105 hover:-translate-y-0.5

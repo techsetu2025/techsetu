@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Mail, Phone, MapPin, Send, Clock, ArrowRight, PhoneCall, MessageSquare } from "lucide-react"
+import { Mail, Phone, MapPin, Send, Clock, ArrowRight, PhoneCall, MessageSquare } from 'lucide-react'
 import emailjs from "@emailjs/browser"
 import Modal from "@/components/ui/Modal"
 
@@ -11,6 +11,8 @@ const ContactSection = () => {
     user_name: "",
     user_email: "",
     user_subject: "",
+    project_type: "",
+    budget_range: "",
     message: "",
   })
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -24,7 +26,30 @@ const ContactSection = () => {
   const SERVICE_ID = "service_emu2xai" // From image 2
   const TEMPLATE_ID = "template_kg970bi" // From image 3
   const PUBLIC_KEY = "SVKz-D0cD8hn6RRgw" // From image 1
-  const WHATSAPP_NUMBER = "8511231514" // User provided WhatsApp number
+  const WHATSAPP_NUMBER = "+918511231514" // Updated with +91
+  const PHONE_NUMBER = "+918347991132" // Updated with +91
+
+  const projectTypes = [
+    "Custom Software Development",
+    "Web Application Development",
+    "Mobile App Development",
+    "UI/UX Design",
+    "E-commerce Website",
+    "Brand Identity Design",
+    "Digital Marketing",
+    "System Integration",
+    "Consulting Services",
+    "Other"
+  ]
+
+  const budgetRanges = [
+    "₹50,000 - ₹1,00,000",
+    "₹1,00,000 - ₹2,50,000",
+    "₹2,50,000 - ₹5,00,000",
+    "₹5,00,000 - ₹10,00,000",
+    "₹10,00,000+",
+    "Let's Discuss"
+  ]
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -75,6 +100,8 @@ const ContactSection = () => {
         user_name: "",
         user_email: "",
         user_subject: "",
+        project_type: "",
+        budget_range: "",
         message: "",
       })
     } catch (error) {
@@ -92,23 +119,25 @@ const ContactSection = () => {
       title: "Email Us",
       content: "techsetu2025@gmail.com",
       description: "Send us an email anytime!",
+      action: "mailto:techsetu2025@gmail.com"
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      content: "8347991132",
-      description: "Mon-Fri from 8am to 5pm",
+      content: "+91 8347991132",
+      description: "Mon-Fri from 9am to 6pm",
+      action: "tel:+918347991132"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Visit Us",
       content: "Tech Hub, Innovation District",
-      description: "Come say hello at our office",
+      description: "Bangalore, Karnataka, India",
     },
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Working Hours",
-      content: "Mon - Fri: 9AM - 6PM",
+      content: "Mon - Fri: 9AM - 6PM IST",
       description: "Always available for urgent matters",
     },
   ]
@@ -170,7 +199,7 @@ const ContactSection = () => {
                     className="group relative transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
-                    <div className="bg-card/80 backdrop-blur-lg rounded-xl p-6 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300">
+                    <div className="bg-card/80 backdrop-blur-lg rounded-xl p-6 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300 h-full">
                       <div className="flex items-start space-x-4">
                         <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground group-hover:animate-float">
                           {info.icon}
@@ -179,7 +208,16 @@ const ContactSection = () => {
                           <h4 className="text-lg font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300">
                             {info.title}
                           </h4>
-                          <p className="text-foreground font-medium">{info.content}</p>
+                          {info.action ? (
+                            <a 
+                              href={info.action}
+                              className="text-foreground font-medium hover:text-nav-item-hover transition-colors duration-300"
+                            >
+                              {info.content}
+                            </a>
+                          ) : (
+                            <p className="text-foreground font-medium">{info.content}</p>
+                          )}
                           <p className="text-sm text-muted-foreground">{info.description}</p>
                         </div>
                       </div>
@@ -221,7 +259,7 @@ const ContactSection = () => {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium text-foreground">
-                        Full Name
+                        Full Name *
                       </label>
                       <input
                         type="text"
@@ -237,7 +275,7 @@ const ContactSection = () => {
 
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-medium text-foreground">
-                        Email Address
+                        Email Address *
                       </label>
                       <input
                         type="email"
@@ -254,7 +292,7 @@ const ContactSection = () => {
 
                   <div className="space-y-2">
                     <label htmlFor="subject" className="text-sm font-medium text-foreground">
-                      Subject
+                      Subject *
                     </label>
                     <input
                       type="text"
@@ -268,9 +306,53 @@ const ContactSection = () => {
                     />
                   </div>
 
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="project_type" className="text-sm font-medium text-foreground">
+                        Project Type *
+                      </label>
+                      <select
+                        id="project_type"
+                        name="project_type"
+                        value={formData.project_type}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-background/50 border border-border/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-nav-item-hover focus:border-transparent transition-all duration-300 text-foreground"
+                        required
+                      >
+                        <option value="">Select project type</option>
+                        {projectTypes.map((type) => (
+                          <option key={type} value={type} className="bg-background text-foreground">
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="budget_range" className="text-sm font-medium text-foreground">
+                        Budget Range *
+                      </label>
+                      <select
+                        id="budget_range"
+                        name="budget_range"
+                        value={formData.budget_range}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-background/50 border border-border/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-nav-item-hover focus:border-transparent transition-all duration-300 text-foreground"
+                        required
+                      >
+                        <option value="">Select budget range</option>
+                        {budgetRanges.map((range) => (
+                          <option key={range} value={range} className="bg-background text-foreground">
+                            {range}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium text-foreground">
-                      Message
+                      Project Details *
                     </label>
                     <textarea
                       id="message"
@@ -279,7 +361,7 @@ const ContactSection = () => {
                       value={formData.message}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-background/50 border border-border/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-nav-item-hover focus:border-transparent transition-all duration-300 text-foreground placeholder-muted-foreground resize-none"
-                      placeholder="Tell us about your project..."
+                      placeholder="Tell us about your project requirements, timeline, and any specific features you need..."
                       required
                     />
                   </div>
@@ -363,7 +445,7 @@ const ContactSection = () => {
           </div>
 
           <h3 className="text-2xl font-bold text-foreground">Message Sent!</h3>
-          <p className="text-muted-foreground">Your message has been successfully sent. We'll get back to you soon!</p>
+          <p className="text-muted-foreground">Your message has been successfully sent. We'll get back to you within 24 hours!</p>
         </div>
       </Modal>
 
@@ -386,7 +468,7 @@ const ContactSection = () => {
           </svg>
           <h3 className="text-2xl font-bold text-foreground">Failed to Send!</h3>
           <p className="text-muted-foreground">
-            There was an issue sending your message. Please check your EmailJS setup or try again later.
+            There was an issue sending your message. Please try calling us directly at <a href="tel:+918347991132" className="text-nav-item-hover hover:underline">+91 8347991132</a> or try again later.
           </p>
         </div>
       </Modal>
@@ -403,16 +485,16 @@ const ContactSection = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <a
-              href={`tel:${WHATSAPP_NUMBER}`}
+              href={`tel:${PHONE_NUMBER}`}
               className="group flex flex-col items-center justify-center p-6 bg-secondary/50 rounded-xl border border-border/20 shadow-3d-light hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 space-y-2"
               onClick={() => setShowScheduleCallModal(false)}
             >
               <PhoneCall className="w-10 h-10 text-primary group-hover:text-nav-item-hover transition-colors" />
               <span className="text-lg font-semibold text-foreground group-hover:text-nav-item-hover">Via Call</span>
-              <span className="text-sm text-muted-foreground">{WHATSAPP_NUMBER}</span>
+              <span className="text-sm text-muted-foreground">{PHONE_NUMBER}</span>
             </a>
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center justify-center p-6 bg-secondary/50 rounded-xl border border-border/20 shadow-3d-light hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 space-y-2"

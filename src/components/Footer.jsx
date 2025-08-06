@@ -58,17 +58,23 @@ const Footer = () => {
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <div className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300">
+                <a 
+                  href="mailto:techsetu2025@gmail.com"
+                  className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300"
+                >
                   <Mail className="w-4 h-4" />
                   <span className="text-sm">techsetu2025@gmail.com</span>
-                </div>
-                <div className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300">
+                </a>
+                <a 
+                  href="tel:+918347991132"
+                  className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300"
+                >
                   <Phone className="w-4 h-4" />
-                  <span className="text-sm">8347991132</span>
-                </div>
+                  <span className="text-sm">+91 8347991132</span>
+                </a>
                 <div className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300">
                   <MapPin className="w-4 h-4" />
-                  <span className="text-sm">Tech Hub, Innovation District</span>
+                  <span className="text-sm">Tech Hub, Innovation District, Bangalore</span>
                 </div>
               </div>
 

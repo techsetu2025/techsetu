@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Target, Users, Award, Zap, ArrowRight, CheckCircle } from "lucide-react"
+import { Target, Users, Award, Zap, ArrowRight, CheckCircle } from 'lucide-react'
 import { useState } from "react"
 
 // Custom hook for animated counting
@@ -80,9 +80,9 @@ const AboutSection = () => {
   }, [shouldStartCounting])
 
   const stats = [
-    { number: 50, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
-    { number: 30, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
-    { number: 5, label: "Years Experience", icon: <Award className="w-6 h-6" />, suffix: "+" },
+    { number: 15, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
+    { number: 10, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
+    { number: 1, label: "Year Experience", icon: <Award className="w-6 h-6" />, suffix: "+" },
     { number: 24, label: "Support", icon: <Zap className="w-6 h-6" />, suffix: "/7" },
   ]
 
@@ -190,10 +190,10 @@ const AboutSection = () => {
               return (
                 <div
                   key={stat.label}
-                  className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300"
+                  className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 h-full"
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
+                  <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center h-full flex flex-col justify-center">
                     <div className="space-y-4">
                       <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float">
                         {stat.icon}
@@ -231,15 +231,15 @@ const AboutSection = () => {
             {values.map((value, index) => (
               <div
                 key={value.title}
-                className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300"
+                className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 h-full"
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className="bg-card/50 backdrop-blur-lg rounded-xl p-6 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300 h-full">
-                  <div className="space-y-4">
+                <div className="bg-card/50 backdrop-blur-lg rounded-xl p-6 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300 h-full flex flex-col">
+                  <div className="space-y-4 flex-1">
                     <h4 className="text-lg font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300">
                       {value.title}
                     </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{value.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">{value.description}</p>
                   </div>
                 </div>
               </div>
