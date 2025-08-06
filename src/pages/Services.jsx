@@ -1,15 +1,17 @@
 import Navigation3D from "@/components/Navigation3D"
-import TechSetuHero from "@/components/TechSetuHero"
+import ServicesSection from "@/components/ServicesSection"
 import Footer from "@/components/Footer"
 
-const Index = () => {
+const Services = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation3D />
-      <TechSetuHero />
+      <div className="pt-16">
+        <ServicesSection />
+      </div>
       <Footer />
     </div>
   )
 }
 
-export default Index
+export default Services

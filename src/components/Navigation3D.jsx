@@ -1,13 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ChevronDown, Home, Settings, Users, Mail, Smartphone, Globe, Database } from "lucide-react"
+import { useNavigate, useLocation } from "react-router-dom"
+import { ChevronDown, Home, Settings, Users, Mail, Smartphone, Globe, Database } from 'lucide-react'
 
 const Navigation3D = () => {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [isMobile, setIsMobile] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     const checkMobile = () => {
@@ -32,34 +35,34 @@ const Navigation3D = () => {
   const navItems = [
     {
       label: "Home",
-      href: "#home",
+      href: "/",
       icon: <Home className="w-4 h-4" />,
     },
     {
       label: "Services",
-      href: "#services",
+      href: "/services",
       icon: <Settings className="w-4 h-4" />,
       dropdown: [
-        { label: "Custom Software", href: "#services", icon: <Globe className="w-4 h-4" /> },
-        { label: "UI/UX Design", href: "#services", icon: <Smartphone className="w-4 h-4" /> },
-        { label: "Custom Website", href: "#services", icon: <Database className="w-4 h-4" /> },
-        { label: "Graphic Design", href: "#services", icon: <Users className="w-4 h-4" /> },
-        { label: "Custom Portfolio", href: "#services", icon: <Settings className="w-4 h-4" /> },
+        { label: "Custom Software", href: "/services", icon: <Globe className="w-4 h-4" /> },
+        { label: "UI/UX Design", href: "/services", icon: <Smartphone className="w-4 h-4" /> },
+        { label: "Custom Website", href: "/services", icon: <Database className="w-4 h-4" /> },
+        { label: "Graphic Design", href: "/services", icon: <Users className="w-4 h-4" /> },
+        { label: "Custom Portfolio", href: "/services", icon: <Settings className="w-4 h-4" /> },
       ],
     },
     {
       label: "About Us",
-      href: "#about",
+      href: "/about",
       icon: <Users className="w-4 h-4" />,
     },
     {
       label: "Portfolio",
-      href: "#portfolio",
+      href: "/portfolio",
       icon: <Database className="w-4 h-4" />,
     },
     {
       label: "Contact",
-      href: "#contact",
+      href: "/contact",
       icon: <Mail className="w-4 h-4" />,
     },
   ]
@@ -82,6 +85,16 @@ const Navigation3D = () => {
     }
   }
 
+  const handleNavigation = (href) => {
+    navigate(href)
+    setMobileMenuOpen(false)
+    setActiveDropdown(null)
+  }
+
+  const isActive = (href) => {
+    return location.pathname === href
+  }
+
   return (
     <nav className="relative z-50">
       {/* Main Navigation Bar */}
@@ -92,7 +105,7 @@ const Navigation3D = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 cursor-pointer" onClick={() => handleNavigation("/")}>
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-button rounded-lg shadow-3d-light flex items-center justify-center animate-glow transform hover:scale-110 transition-transform duration-300">
                     <span className="text-primary-foreground font-bold text-xl">TS</span>
@@ -115,15 +128,15 @@ const Navigation3D = () => {
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <a
-                      href={item.href}
+                    <button
+                      onClick={() => handleNavigation(item.href)}
                       className={`
                         group relative px-4 py-2 rounded-lg font-medium text-sm
                         transition-all duration-300 ease-in-out
                         flex items-center space-x-2
                         transform hover:scale-105 hover:-translate-y-0.5
                         ${
-                          activeDropdown === item.label
+                          isActive(item.href) || activeDropdown === item.label
                             ? "bg-nav-item-hover text-primary-foreground shadow-3d-light"
                             : "text-foreground hover:bg-nav-item-hover/10 hover:text-nav-item-hover"
                         }
@@ -142,7 +155,7 @@ const Navigation3D = () => {
                           }`}
                         />
                       )}
-                    </a>
+                    </button>
 
                     {/* Dropdown Menu */}
                     {item.dropdown && activeDropdown === item.label && (
@@ -150,11 +163,11 @@ const Navigation3D = () => {
                         <div className="bg-dropdown-bg backdrop-blur-lg rounded-lg shadow-dropdown border border-border/20 overflow-hidden">
                           <div className="py-2">
                             {item.dropdown.map((subItem, index) => (
-                              <a
+                              <button
                                 key={subItem.label}
-                                href={subItem.href}
+                                onClick={() => handleNavigation(subItem.href)}
                                 className={`
-                                  block px-4 py-3 text-sm text-foreground
+                                  block w-full text-left px-4 py-3 text-sm text-foreground
                                   hover:bg-nav-item-hover/10 hover:text-nav-item-hover
                                   transition-all duration-200
                                   flex items-center space-x-3
@@ -168,7 +181,7 @@ const Navigation3D = () => {
                               >
                                 <div className="flex-shrink-0 text-nav-item-hover">{subItem.icon}</div>
                                 <span>{subItem.label}</span>
-                              </a>
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -208,13 +221,17 @@ const Navigation3D = () => {
               {navItems.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between" onClick={() => handleDropdownToggle(item.label)}>
-                    <a
-                      href={item.href}
-                      className="flex items-center space-x-3 px-3 py-3 rounded-lg text-foreground hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-200 flex-grow"
+                    <button
+                      onClick={() => handleNavigation(item.href)}
+                      className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 flex-grow ${
+                        isActive(item.href)
+                          ? "bg-nav-item-hover/20 text-nav-item-hover"
+                          : "text-foreground hover:bg-nav-item-hover/10 hover:text-nav-item-hover"
+                      }`}
                     >
                       {item.icon}
                       <span className="font-medium">{item.label}</span>
-                    </a>
+                    </button>
                     {item.dropdown && (
                       <button className="p-2 text-foreground">
                         <ChevronDown
@@ -230,11 +247,11 @@ const Navigation3D = () => {
                   {item.dropdown && activeDropdown === item.label && (
                     <div className="ml-4 mt-2 space-y-1 animate-slide-down">
                       {item.dropdown.map((subItem, index) => (
-                        <a
+                        <button
                           key={subItem.label}
-                          href={subItem.href}
+                          onClick={() => handleNavigation(subItem.href)}
                           className={`
-                            flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-muted-foreground
+                            w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-muted-foreground
                             hover:bg-nav-item-hover/10 hover:text-nav-item-hover
                             transition-all duration-200
                             animate-fade-in
@@ -246,7 +263,7 @@ const Navigation3D = () => {
                         >
                           <div className="text-nav-item-hover">{subItem.icon}</div>
                           <span>{subItem.label}</span>
-                        </a>
+                        </button>
                       ))}
                     </div>
                   )}

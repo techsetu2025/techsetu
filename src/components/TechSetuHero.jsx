@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowRight, Sparkles, Zap, Code, Target, Users, Clock } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { ArrowRight, Sparkles, Zap, Code, Target, Users, Clock } from 'lucide-react'
 
 const TechSetuHero = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setIsVisible(true)
@@ -88,13 +90,19 @@ const TechSetuHero = () => {
             <div
               className={`flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 transition-all duration-1000 delay-600 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
             >
-              <button className="group relative px-8 py-4 bg-gradient-button rounded-lg font-semibold text-primary-foreground shadow-3d-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2">
+              <button 
+                onClick={() => navigate("/contact")}
+                className="group relative px-8 py-4 bg-gradient-button rounded-lg font-semibold text-primary-foreground shadow-3d-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
+              >
                 <Zap className="w-5 h-5" />
                 <span>Start Your Project</span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
 
-              <button className="group px-8 py-4 bg-secondary/50 backdrop-blur-sm rounded-lg font-semibold text-foreground border border-border/20 shadow-3d-light hover:shadow-glow hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2">
+              <button 
+                onClick={() => navigate("/portfolio")}
+                className="group px-8 py-4 bg-secondary/50 backdrop-blur-sm rounded-lg font-semibold text-foreground border border-border/20 shadow-3d-light hover:shadow-glow hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
+              >
                 <Code className="w-5 h-5" />
                 <span>View Our Work</span>
               </button>

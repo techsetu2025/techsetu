@@ -1,22 +1,24 @@
-import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from "lucide-react"
+import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from 'lucide-react'
+import { useNavigate } from "react-router-dom"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const navigate = useNavigate()
 
   const quickLinks = [
-    { label: "Home", href: "#home" },
-    { label: "About Us", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Portfolio", href: "#portfolio" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "Portfolio", href: "/portfolio" },
+    { label: "Contact", href: "/contact" },
   ]
 
   const services = [
-    { label: "Custom Software", href: "#services" },
-    { label: "UI/UX Design", href: "#services" },
-    { label: "Web Development", href: "#services" },
-    { label: "Mobile Apps", href: "#services" },
-    { label: "Consulting", href: "#services" },
+    { label: "Custom Software", href: "/services" },
+    { label: "UI/UX Design", href: "/services" },
+    { label: "Web Development", href: "/services" },
+    { label: "Mobile Apps", href: "/services" },
+    { label: "Consulting", href: "/services" },
   ]
 
   const socialLinks = [
@@ -39,7 +41,7 @@ const Footer = () => {
           <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
                 <div className="w-12 h-12 bg-gradient-button rounded-lg shadow-3d-light flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-xl">TS</span>
                 </div>
@@ -90,13 +92,13 @@ const Footer = () => {
               <h3 className="text-lg font-bold text-foreground">Quick Links</h3>
               <div className="space-y-3">
                 {quickLinks.map((link) => (
-                  <a
+                  <button
                     key={link.label}
-                    href={link.href}
-                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm"
+                    onClick={() => navigate(link.href)}
+                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm text-left"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>
@@ -106,13 +108,13 @@ const Footer = () => {
               <h3 className="text-lg font-bold text-foreground">Our Services</h3>
               <div className="space-y-3">
                 {services.map((service) => (
-                  <a
+                  <button
                     key={service.label}
-                    href={service.href}
-                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm"
+                    onClick={() => navigate(service.href)}
+                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm text-left"
                   >
                     {service.label}
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>
