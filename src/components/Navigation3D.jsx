@@ -89,6 +89,8 @@ const Navigation3D = () => {
     navigate(href)
     setMobileMenuOpen(false)
     setActiveDropdown(null)
+    // Scroll to top when navigating to a new page
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const isActive = (href) => {

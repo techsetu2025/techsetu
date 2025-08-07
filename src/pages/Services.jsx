@@ -1,5 +1,6 @@
 import Navigation3D from "@/components/Navigation3D"
 import ServicesSection from "@/components/ServicesSection"
+import ScrollToTop from "@/components/ScrollToTop"
 import Footer from "@/components/Footer"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Palette, Globe, Users, Smartphone, Database, Settings, CheckCircle, Star, Zap, Target, Clock, Award } from 'lucide-react'
@@ -12,6 +13,11 @@ const Services = () => {
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  const handleNavigation = (path) => {
+    navigate(path)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   // Add the useCountUp hook function
   const useCountUp = (end, duration = 2000, shouldStart = false) => {
@@ -249,14 +255,14 @@ const Services = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <button
-                onClick={() => navigate("/contact")}
+                onClick={() => handleNavigation("/contact")}
                 className="group relative px-8 py-4 bg-gradient-button rounded-lg font-semibold text-primary-foreground shadow-3d-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
                 <span>Get Free Consultation</span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
               <button
-                onClick={() => navigate("/portfolio")}
+                onClick={() => handleNavigation("/portfolio")}
                 className="group px-8 py-4 bg-secondary/50 backdrop-blur-sm rounded-lg font-semibold text-foreground border border-border/20 shadow-3d-light hover:shadow-glow hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
                 <span>View Our Work</span>
@@ -561,6 +567,7 @@ const Services = () => {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }

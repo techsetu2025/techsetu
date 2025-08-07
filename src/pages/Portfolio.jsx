@@ -1,100 +1,143 @@
-import Navigation3D from "@/components/Navigation3D"
-import PortfolioSection from "@/components/PortfolioSection"
-import Footer from "@/components/Footer"
-import { useNavigate } from "react-router-dom"
-import { ArrowRight, Code, Palette, Globe, Users, Target, Star, Calendar, ExternalLink, Github, Filter, Search } from 'lucide-react'
-import { useEffect, useState, useRef } from "react"
+import Navigation3D from "@/components/Navigation3D";
+import PortfolioSection from "@/components/PortfolioSection";
+import ScrollToTop from "@/components/ScrollToTop";
+import Footer from "@/components/Footer";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+  Code,
+  Palette,
+  Globe,
+  Users,
+  Target,
+  Star,
+  Calendar,
+  ExternalLink,
+  Github,
+  Filter,
+  Search,
+} from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 
 const Portfolio = () => {
-  const navigate = useNavigate()
-  const [isVisible, setIsVisible] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [shouldStartCounting, setShouldStartCounting] = useState(false)
-  const statsRef = useRef(null)
+  const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [shouldStartCounting, setShouldStartCounting] = useState(false);
+  const statsRef = useRef(null);
 
   const useCountUp = (end, duration = 2000, shouldStart = false) => {
-    const [count, setCount] = useState(0)
-    const [hasStarted, setHasStarted] = useState(false)
+    const [count, setCount] = useState(0);
+    const [hasStarted, setHasStarted] = useState(false);
 
     useEffect(() => {
-      if (!shouldStart || hasStarted) return
+      if (!shouldStart || hasStarted) return;
 
-      setHasStarted(true)
-      let startTime = null
-      const startValue = 0
+      setHasStarted(true);
+      let startTime = null;
+      const startValue = 0;
 
       const animate = (currentTime) => {
-        if (startTime === null) startTime = currentTime
-        const progress = Math.min((currentTime - startTime) / duration, 1)
+        if (startTime === null) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
 
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4)
-        const currentCount = Math.floor(easeOutQuart * (end - startValue) + startValue)
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentCount = Math.floor(
+          easeOutQuart * (end - startValue) + startValue
+        );
 
-        setCount(currentCount)
+        setCount(currentCount);
 
         if (progress < 1) {
-          requestAnimationFrame(animate)
+          requestAnimationFrame(animate);
         } else {
-          setCount(end)
+          setCount(end);
         }
-      }
+      };
 
-      requestAnimationFrame(animate)
-    }, [end, duration, shouldStart, hasStarted])
+      requestAnimationFrame(animate);
+    }, [end, duration, shouldStart, hasStarted]);
 
-    return count
-  }
+    return count;
+  };
 
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
+    setIsVisible(true);
+  }, []);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const portfolioStats = [
-    { number: 100, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
-    { number: 50, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
-    { number: 15, label: "Industries Served", icon: <Globe className="w-6 h-6" />, suffix: "+" },
-    { number: 5, label: "Years Experience", icon: <Calendar className="w-6 h-6" />, suffix: "+" }
-  ]
+    {
+      number: 100,
+      label: "Projects Completed",
+      icon: <Target className="w-6 h-6" />,
+      suffix: "+",
+    },
+    {
+      number: 50,
+      label: "Happy Clients",
+      icon: <Users className="w-6 h-6" />,
+      suffix: "+",
+    },
+    {
+      number: 15,
+      label: "Industries Served",
+      icon: <Globe className="w-6 h-6" />,
+      suffix: "+",
+    },
+    {
+      number: 5,
+      label: "Years Experience",
+      icon: <Calendar className="w-6 h-6" />,
+      suffix: "+",
+    },
+  ];
 
   const industries = [
     {
       name: "Healthcare",
       projects: 15,
-      description: "Medical apps, patient management systems, telemedicine platforms",
-      icon: "🏥"
+      description:
+        "Medical apps, patient management systems, telemedicine platforms",
+      icon: "🏥",
     },
     {
       name: "E-commerce",
       projects: 20,
       description: "Online stores, marketplace platforms, payment integrations",
-      icon: "🛒"
+      icon: "🛒",
     },
     {
       name: "Education",
       projects: 12,
-      description: "Learning management systems, educational apps, online courses",
-      icon: "📚"
+      description:
+        "Learning management systems, educational apps, online courses",
+      icon: "📚",
     },
     {
       name: "Finance",
       projects: 8,
       description: "Banking apps, investment platforms, financial dashboards",
-      icon: "💰"
+      icon: "💰",
     },
     {
       name: "Real Estate",
       projects: 10,
       description: "Property management, listing platforms, virtual tours",
-      icon: "🏠"
+      icon: "🏠",
     },
     {
       name: "Technology",
       projects: 25,
       description: "SaaS platforms, enterprise software, tech startups",
-      icon: "💻"
-    }
-  ]
+      icon: "💻",
+    },
+  ];
 
   const clientTestimonials = [
     {
@@ -103,7 +146,7 @@ const Portfolio = () => {
       project: "Enterprise Dashboard",
       rating: 5,
       text: "Tech Setu delivered an exceptional dashboard that transformed how we visualize our data. The attention to detail and user experience is outstanding.",
-      image: "/placeholder.svg?height=60&width=60"
+      image: "/placeholder.svg?height=60&width=60",
     },
     {
       name: "Michael Chen",
@@ -111,7 +154,7 @@ const Portfolio = () => {
       project: "Brand Identity & Website",
       rating: 5,
       text: "From concept to launch, Tech Setu exceeded our expectations. Our new brand identity perfectly captures our vision and the website is beautiful.",
-      image: "/placeholder.svg?height=60&width=60"
+      image: "/placeholder.svg?height=60&width=60",
     },
     {
       name: "Emily Rodriguez",
@@ -119,32 +162,32 @@ const Portfolio = () => {
       project: "Healthcare Mobile App",
       rating: 5,
       text: "The mobile app they developed has revolutionized how our patients interact with our services. User engagement increased by 300%.",
-      image: "/placeholder.svg?height=60&width=60"
-    }
-  ]
+      image: "/placeholder.svg?height=60&width=60",
+    },
+  ];
 
   const achievements = [
     {
       title: "Best Web Development Agency 2023",
       organization: "Digital Excellence Awards",
-      year: "2023"
+      year: "2023",
     },
     {
       title: "Top UI/UX Design Company",
       organization: "Design Recognition Awards",
-      year: "2023"
+      year: "2023",
     },
     {
       title: "Client Satisfaction Excellence",
       organization: "Business Excellence Awards",
-      year: "2022"
+      year: "2022",
     },
     {
       title: "Innovation in Technology",
       organization: "Tech Innovation Awards",
-      year: "2022"
-    }
-  ]
+      year: "2022",
+    },
+  ];
 
   const technologies = [
     { name: "React", category: "Frontend", projects: 45 },
@@ -154,65 +197,78 @@ const Portfolio = () => {
     { name: "MongoDB", category: "Database", projects: 30 },
     { name: "PostgreSQL", category: "Database", projects: 28 },
     { name: "AWS", category: "Cloud", projects: 35 },
-    { name: "Figma", category: "Design", projects: 50 }
-  ]
+    { name: "Figma", category: "Design", projects: 50 },
+  ];
 
   useEffect(() => {
     const statsObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !shouldStartCounting) {
-          setShouldStartCounting(true)
+          setShouldStartCounting(true);
         }
       },
       { threshold: 0.3 }
-    )
+    );
 
     if (statsRef.current) {
-      statsObserver.observe(statsRef.current)
+      statsObserver.observe(statsRef.current);
     }
 
-    return () => statsObserver.disconnect()
-  }, [shouldStartCounting])
+    return () => statsObserver.disconnect();
+  }, [shouldStartCounting]);
 
   return (
     <div className="min-h-screen bg-background pt-16">
       <Navigation3D />
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden bg-gradient-to-br from-background via-background to-secondary/20">
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+          <div
+            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent/20 rounded-full blur-3xl animate-float"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center space-y-8 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+          <div
+            className={`text-center space-y-8 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/20 shadow-3d-light">
               <Code className="w-4 h-4 text-nav-item-hover" />
-              <span className="text-sm font-medium text-foreground">OUR PORTFOLIO</span>
+              <span className="text-sm font-medium text-foreground">
+                OUR PORTFOLIO
+              </span>
             </div>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Showcasing Our{" "}
               <span className="bg-gradient-to-r from-primary via-nav-item-hover to-accent bg-clip-text text-transparent">
                 Best Work
               </span>
             </h1>
-            
+
             <p className="text-lg sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              Explore our diverse portfolio of successful projects across various industries. Each project represents our commitment to excellence, innovation, and client satisfaction.
+              Explore our diverse portfolio of successful projects across
+              various industries. Each project represents our commitment to
+              excellence, innovation, and client satisfaction.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <button
-                onClick={() => navigate("/contact")}
+                onClick={() => handleNavigation("/contact")}
                 className="group relative px-8 py-4 bg-gradient-button rounded-lg font-semibold text-primary-foreground shadow-3d-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
                 <span>Start Your Project</span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
               <button
-                onClick={() => navigate("/services")}
+                onClick={() => handleNavigation("/services")}
                 className="group px-8 py-4 bg-secondary/50 backdrop-blur-sm rounded-lg font-semibold text-foreground border border-border/20 shadow-3d-light hover:shadow-glow hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
                 <span>Our Services</span>
@@ -226,27 +282,40 @@ const Portfolio = () => {
       {/* Portfolio Stats */}
       <section className="py-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          <div
+            ref={statsRef}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
+          >
             {portfolioStats.map((stat, index) => {
-              const animatedCount = useCountUp(stat.number, 2000 + index * 200, shouldStartCounting)
-              
+              const animatedCount = useCountUp(
+                stat.number,
+                2000 + index * 200,
+                shouldStartCounting
+              );
+
               return (
                 <div
                   key={stat.label}
                   className={`group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-fade-in`}
-                  style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
+                  style={{
+                    animationDelay: `${index * 150}ms`,
+                    animationFillMode: "both",
+                  }}
                 >
                   <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
                     <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
                       {stat.icon}
                     </div>
                     <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
-                      {animatedCount}{stat.suffix}
+                      {animatedCount}
+                      {stat.suffix}
                     </div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -261,7 +330,9 @@ const Portfolio = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/20 shadow-3d-light">
-              <span className="text-sm font-medium text-nav-item-hover">INDUSTRIES</span>
+              <span className="text-sm font-medium text-nav-item-hover">
+                INDUSTRIES
+              </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
               Industries We{" "}
@@ -270,7 +341,8 @@ const Portfolio = () => {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Our expertise spans across multiple industries, delivering tailored solutions for diverse business needs.
+              Our expertise spans across multiple industries, delivering
+              tailored solutions for diverse business needs.
             </p>
           </div>
 
@@ -287,10 +359,14 @@ const Portfolio = () => {
                       <h3 className="text-xl font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300">
                         {industry.name}
                       </h3>
-                      <p className="text-nav-item-hover font-medium">{industry.projects} Projects</p>
+                      <p className="text-nav-item-hover font-medium">
+                        {industry.projects} Projects
+                      </p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">{industry.description}</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {industry.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -310,7 +386,9 @@ const Portfolio = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/20 shadow-3d-light">
-              <span className="text-sm font-medium text-nav-item-hover">TECHNOLOGIES</span>
+              <span className="text-sm font-medium text-nav-item-hover">
+                TECHNOLOGIES
+              </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
               Technologies in{" "}
@@ -330,8 +408,12 @@ const Portfolio = () => {
                   <div className="font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300 mb-1">
                     {tech.name}
                   </div>
-                  <div className="text-xs text-muted-foreground mb-2">{tech.category}</div>
-                  <div className="text-sm text-nav-item-hover font-medium">{tech.projects} projects</div>
+                  <div className="text-xs text-muted-foreground mb-2">
+                    {tech.category}
+                  </div>
+                  <div className="text-sm text-nav-item-hover font-medium">
+                    {tech.projects} projects
+                  </div>
                 </div>
               </div>
             ))}
@@ -348,7 +430,9 @@ const Portfolio = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/20 shadow-3d-light">
-              <span className="text-sm font-medium text-nav-item-hover">CLIENT FEEDBACK</span>
+              <span className="text-sm font-medium text-nav-item-hover">
+                CLIENT FEEDBACK
+              </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
               What Clients Say About{" "}
@@ -367,10 +451,15 @@ const Portfolio = () => {
                 <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 h-full">
                   <div className="flex items-center space-x-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-4 h-4 text-yellow-400 fill-current"
+                      />
                     ))}
                   </div>
-                  <p className="text-muted-foreground leading-relaxed mb-6">"{testimonial.text}"</p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    "{testimonial.text}"
+                  </p>
                   <div className="flex items-center space-x-4">
                     <img
                       src={testimonial.image || "/placeholder.svg"}
@@ -378,9 +467,15 @@ const Portfolio = () => {
                       className="w-12 h-12 rounded-full object-cover"
                     />
                     <div>
-                      <div className="font-bold text-foreground">{testimonial.name}</div>
-                      <div className="text-sm text-nav-item-hover">{testimonial.company}</div>
-                      <div className="text-xs text-muted-foreground">{testimonial.project}</div>
+                      <div className="font-bold text-foreground">
+                        {testimonial.name}
+                      </div>
+                      <div className="text-sm text-nav-item-hover">
+                        {testimonial.company}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {testimonial.project}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -399,7 +494,9 @@ const Portfolio = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/20 shadow-3d-light">
-              <span className="text-sm font-medium text-nav-item-hover">RECOGNITION</span>
+              <span className="text-sm font-medium text-nav-item-hover">
+                RECOGNITION
+              </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
               Awards &{" "}
@@ -422,8 +519,12 @@ const Portfolio = () => {
                   <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-nav-item-hover transition-colors duration-300">
                     {achievement.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm mb-2">{achievement.organization}</p>
-                  <p className="text-nav-item-hover font-medium">{achievement.year}</p>
+                  <p className="text-muted-foreground text-sm mb-2">
+                    {achievement.organization}
+                  </p>
+                  <p className="text-nav-item-hover font-medium">
+                    {achievement.year}
+                  </p>
                 </div>
               </div>
             ))}
@@ -442,7 +543,8 @@ const Portfolio = () => {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join our growing list of satisfied clients. Let's discuss your project and create something amazing together.
+              Join our growing list of satisfied clients. Let's discuss your
+              project and create something amazing together.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <button
@@ -465,8 +567,9 @@ const Portfolio = () => {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
-  )
-}
+  );
+};
 
-export default Portfolio
+export default Portfolio;

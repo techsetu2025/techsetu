@@ -1,5 +1,6 @@
 import Navigation3D from "@/components/Navigation3D"
 import ContactSection from "@/components/ContactSection"
+import ScrollToTop from "@/components/ScrollToTop"
 import Footer from "@/components/Footer"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Mail, Phone, MapPin, Clock, MessageSquare, Calendar, Users, CheckCircle, Star, Globe } from 'lucide-react'
@@ -12,6 +13,11 @@ const Contact = () => {
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  const handleNavigation = (path) => {
+    navigate(path)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   // Add the useCountUp hook function
   const useCountUp = (end, duration = 2000, shouldStart = false) => {
@@ -506,6 +512,7 @@ const Contact = () => {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
