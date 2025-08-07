@@ -69,7 +69,7 @@ const AboutSection = () => {
           setShouldStartCounting(true)
         }
       },
-      { threshold: 0.5 },
+      { threshold: 0.3 } // Reduced threshold for better triggering
     )
 
     if (statsRef.current) {
@@ -80,9 +80,9 @@ const AboutSection = () => {
   }, [shouldStartCounting])
 
   const stats = [
-    { number: 15, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
-    { number: 10, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
-    { number: 1, label: "Year Experience", icon: <Award className="w-6 h-6" />, suffix: "+" },
+    { number: 50, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
+    { number: 30, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
+    { number: 5, label: "Years Experience", icon: <Award className="w-6 h-6" />, suffix: "+" },
     { number: 24, label: "Support", icon: <Zap className="w-6 h-6" />, suffix: "/7" },
   ]
 

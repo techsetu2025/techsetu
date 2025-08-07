@@ -146,10 +146,10 @@ const About = () => {
   ]
 
   const achievements = [
-    { number: 15, label: "Projects Delivered", icon: <Target className="w-6 h-6" /> },
-    { number: 10, label: "Happy Clients", icon: <Users className="w-6 h-6" /> },
-    { number: 1, label: "Year Experience", icon: <Calendar className="w-6 h-6" /> },
-    { number: 5, label: "Team Members", icon: <Award className="w-6 h-6" /> }
+    { number: 50, label: "Projects Delivered", icon: <Target className="w-6 h-6" /> },
+    { number: 30, label: "Happy Clients", icon: <Users className="w-6 h-6" /> },
+    { number: 5, label: "Years Experience", icon: <Calendar className="w-6 h-6" /> },
+    { number: 10, label: "Team Members", icon: <Award className="w-6 h-6" /> }
   ]
 
   return (

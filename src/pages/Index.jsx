@@ -2,16 +2,70 @@ import Navigation3D from "@/components/Navigation3D"
 import TechSetuHero from "@/components/TechSetuHero"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Palette, Globe, Users, Target, Clock, CheckCircle, Star, Zap } from 'lucide-react'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Footer from "@/components/Footer"
+
+// Custom hook for animated counting
+const useCountUp = (end, duration = 2000, shouldStart = false) => {
+  const [count, setCount] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
+
+  useEffect(() => {
+    if (!shouldStart || hasStarted) return
+
+    setHasStarted(true)
+    let startTime = null
+    const startValue = 0
+
+    const animate = (currentTime) => {
+      if (startTime === null) startTime = currentTime
+      const progress = Math.min((currentTime - startTime) / duration, 1)
+
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+      const currentCount = Math.floor(easeOutQuart * (end - startValue) + startValue)
+
+      setCount(currentCount)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        setCount(end)
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [end, duration, shouldStart, hasStarted])
+
+  return count
+}
 
 const Index = () => {
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
+  const [shouldStartCounting, setShouldStartCounting] = useState(false)
+  const statsRef = useRef(null)
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  useEffect(() => {
+    const statsObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shouldStartCounting) {
+          setShouldStartCounting(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (statsRef.current) {
+      statsObserver.observe(statsRef.current)
+    }
+
+    return () => statsObserver.disconnect()
+  }, [shouldStartCounting])
 
   const features = [
     {
@@ -41,10 +95,10 @@ const Index = () => {
   ]
 
   const stats = [
-    { number: "50+", label: "Projects Completed", icon: <Target className="w-6 h-6" /> },
-    { number: "30+", label: "Happy Clients", icon: <Users className="w-6 h-6" /> },
-    { number: "5+", label: "Years Experience", icon: <Clock className="w-6 h-6" /> },
-    { number: "24/7", label: "Support", icon: <Zap className="w-6 h-6" /> }
+    { number: 50, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
+    { number: 30, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
+    { number: 5, label: "Years Experience", icon: <Clock className="w-6 h-6" />, suffix: "+" },
+    { number: 24, label: "Support", icon: <Zap className="w-6 h-6" />, suffix: "/7" }
   ]
 
   const testimonials = [
@@ -126,22 +180,28 @@ const Index = () => {
           </div>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={`group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-fade-in`}
-                style={{ animationDelay: `${600 + index * 100}ms`, animationFillMode: "both" }}
-              >
-                <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
-                  <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
-                    {stat.icon}
+          <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {stats.map((stat, index) => {
+              const animatedCount = useCountUp(stat.number, 2000 + index * 200, shouldStartCounting)
+              
+              return (
+                <div
+                  key={stat.label}
+                  className={`group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-fade-in`}
+                  style={{ animationDelay: `${600 + index * 100}ms`, animationFillMode: "both" }}
+                >
+                  <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
+                    <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
+                      {stat.icon}
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
+                      {animatedCount}{stat.suffix}
+                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
                   </div>
-                  <div className="text-3xl font-bold text-foreground mb-1">{stat.number}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           {/* Why Choose Us */}

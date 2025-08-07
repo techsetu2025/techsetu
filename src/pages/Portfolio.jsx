@@ -3,23 +3,58 @@ import PortfolioSection from "@/components/PortfolioSection"
 import Footer from "@/components/Footer"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Palette, Globe, Users, Target, Star, Calendar, ExternalLink, Github, Filter, Search } from 'lucide-react'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 const Portfolio = () => {
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const [shouldStartCounting, setShouldStartCounting] = useState(false)
+  const statsRef = useRef(null)
+
+  const useCountUp = (end, duration = 2000, shouldStart = false) => {
+    const [count, setCount] = useState(0)
+    const [hasStarted, setHasStarted] = useState(false)
+
+    useEffect(() => {
+      if (!shouldStart || hasStarted) return
+
+      setHasStarted(true)
+      let startTime = null
+      const startValue = 0
+
+      const animate = (currentTime) => {
+        if (startTime === null) startTime = currentTime
+        const progress = Math.min((currentTime - startTime) / duration, 1)
+
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+        const currentCount = Math.floor(easeOutQuart * (end - startValue) + startValue)
+
+        setCount(currentCount)
+
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        } else {
+          setCount(end)
+        }
+      }
+
+      requestAnimationFrame(animate)
+    }, [end, duration, shouldStart, hasStarted])
+
+    return count
+  }
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
 
   const portfolioStats = [
-    { number: "100+", label: "Projects Completed", icon: <Target className="w-6 h-6" /> },
-    { number: "50+", label: "Happy Clients", icon: <Users className="w-6 h-6" /> },
-    { number: "15+", label: "Industries Served", icon: <Globe className="w-6 h-6" /> },
-    { number: "5+", label: "Years Experience", icon: <Calendar className="w-6 h-6" /> }
+    { number: 100, label: "Projects Completed", icon: <Target className="w-6 h-6" />, suffix: "+" },
+    { number: 50, label: "Happy Clients", icon: <Users className="w-6 h-6" />, suffix: "+" },
+    { number: 15, label: "Industries Served", icon: <Globe className="w-6 h-6" />, suffix: "+" },
+    { number: 5, label: "Years Experience", icon: <Calendar className="w-6 h-6" />, suffix: "+" }
   ]
 
   const industries = [
@@ -122,6 +157,23 @@ const Portfolio = () => {
     { name: "Figma", category: "Design", projects: 50 }
   ]
 
+  useEffect(() => {
+    const statsObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shouldStartCounting) {
+          setShouldStartCounting(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (statsRef.current) {
+      statsObserver.observe(statsRef.current)
+    }
+
+    return () => statsObserver.disconnect()
+  }, [shouldStartCounting])
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <Navigation3D />
@@ -174,22 +226,28 @@ const Portfolio = () => {
       {/* Portfolio Stats */}
       <section className="py-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-            {portfolioStats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={`group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-fade-in`}
-                style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
-              >
-                <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
-                  <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
-                    {stat.icon}
+          <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+            {portfolioStats.map((stat, index) => {
+              const animatedCount = useCountUp(stat.number, 2000 + index * 200, shouldStartCounting)
+              
+              return (
+                <div
+                  key={stat.label}
+                  className={`group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-fade-in`}
+                  style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
+                >
+                  <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
+                    <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
+                      {stat.icon}
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
+                      {animatedCount}{stat.suffix}
+                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
                   </div>
-                  <div className="text-3xl font-bold text-foreground mb-1">{stat.number}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>

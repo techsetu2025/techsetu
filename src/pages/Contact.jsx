@@ -3,7 +3,7 @@ import ContactSection from "@/components/ContactSection"
 import Footer from "@/components/Footer"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Mail, Phone, MapPin, Clock, MessageSquare, Calendar, Users, CheckCircle, Star, Globe } from 'lucide-react'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 const Contact = () => {
   const navigate = useNavigate()
@@ -12,6 +12,62 @@ const Contact = () => {
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  // Add the useCountUp hook function
+  const useCountUp = (end, duration = 2000, shouldStart = false) => {
+    const [count, setCount] = useState(0)
+    const [hasStarted, setHasStarted] = useState(false)
+
+    useEffect(() => {
+      if (!shouldStart || hasStarted) return
+
+      setHasStarted(true)
+      let startTime = null
+      const startValue = 0
+
+      const animate = (currentTime) => {
+        if (startTime === null) startTime = currentTime
+        const progress = Math.min((currentTime - startTime) / duration, 1)
+
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+        const currentCount = Math.floor(easeOutQuart * (end - startValue) + startValue)
+
+        setCount(currentCount)
+
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        } else {
+          setCount(end)
+        }
+      }
+
+      requestAnimationFrame(animate)
+    }, [end, duration, shouldStart, hasStarted])
+
+    return count
+  }
+
+  // Add state for counter animation
+  const [shouldStartCounting, setShouldStartCounting] = useState(false)
+  const reasonsRef = useRef(null)
+
+  // Add useEffect for intersection observer
+  useEffect(() => {
+    const reasonsObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shouldStartCounting) {
+          setShouldStartCounting(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (reasonsRef.current) {
+      reasonsObserver.observe(reasonsRef.current)
+    }
+
+    return () => reasonsObserver.disconnect()
+  }, [shouldStartCounting])
 
   const contactMethods = [
     {
@@ -93,22 +149,30 @@ const Contact = () => {
     {
       icon: <Users className="w-6 h-6" />,
       title: "Expert Team",
-      description: "5+ years of experience with 50+ successful projects"
+      description: "5+ years of experience with 50+ successful projects",
+      number: 50,
+      suffix: "+"
     },
     {
       icon: <Clock className="w-6 h-6" />,
       title: "On-Time Delivery",
-      description: "98% of our projects are delivered on or before deadline"
+      description: "98% of our projects are delivered on or before deadline",
+      number: 98,
+      suffix: "%"
     },
     {
       icon: <CheckCircle className="w-6 h-6" />,
       title: "Quality Assurance",
-      description: "Rigorous testing and quality control processes"
+      description: "Rigorous testing and quality control processes",
+      number: 100,
+      suffix: "%"
     },
     {
       icon: <Star className="w-6 h-6" />,
       title: "Client Satisfaction",
-      description: "100% client satisfaction rate with ongoing relationships"
+      description: "100% client satisfaction rate with ongoing relationships",
+      number: 100,
+      suffix: "%"
     }
   ]
 
@@ -247,23 +311,30 @@ const Contact = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {reasons.map((reason, index) => (
-              <div
-                key={reason.title}
-                className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300"
-              >
-                <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center h-full">
-                  <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
-                    {reason.icon}
+          <div ref={reasonsRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {reasons.map((reason, index) => {
+              const animatedCount = useCountUp(reason.number, 2000 + index * 200, shouldStartCounting)
+              
+              return (
+                <div
+                  key={reason.title}
+                  className="group relative transform hover:scale-105 hover:-translate-y-2 transition-all duration-300"
+                >
+                  <div className="bg-card/80 backdrop-blur-lg rounded-2xl p-6 shadow-3d-medium border border-border/20 hover:shadow-glow transition-all duration-300 text-center h-full">
+                    <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center text-primary-foreground mx-auto group-hover:animate-float mb-4">
+                      {reason.icon}
+                    </div>
+                    <div className="text-2xl font-bold text-nav-item-hover mb-2 tabular-nums">
+                      {animatedCount}{reason.suffix}
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-nav-item-hover transition-colors duration-300">
+                      {reason.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{reason.description}</p>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-nav-item-hover transition-colors duration-300">
-                    {reason.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm">{reason.description}</p>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           {/* Service Areas */}

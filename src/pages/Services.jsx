@@ -3,7 +3,7 @@ import ServicesSection from "@/components/ServicesSection"
 import Footer from "@/components/Footer"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Palette, Globe, Users, Smartphone, Database, Settings, CheckCircle, Star, Zap, Target, Clock, Award } from 'lucide-react'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 const Services = () => {
   const navigate = useNavigate()
@@ -12,6 +12,62 @@ const Services = () => {
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  // Add the useCountUp hook function
+  const useCountUp = (end, duration = 2000, shouldStart = false) => {
+    const [count, setCount] = useState(0)
+    const [hasStarted, setHasStarted] = useState(false)
+
+    useEffect(() => {
+      if (!shouldStart || hasStarted) return
+
+      setHasStarted(true)
+      let startTime = null
+      const startValue = 0
+
+      const animate = (currentTime) => {
+        if (startTime === null) startTime = currentTime
+        const progress = Math.min((currentTime - startTime) / duration, 1)
+
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+        const currentCount = Math.floor(easeOutQuart * (end - startValue) + startValue)
+
+        setCount(currentCount)
+
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        } else {
+          setCount(end)
+        }
+      }
+
+      requestAnimationFrame(animate)
+    }, [end, duration, shouldStart, hasStarted])
+
+    return count
+  }
+
+  // Add state for counter animation
+  const [shouldStartCounting, setShouldStartCounting] = useState(false)
+  const techRef = useRef(null)
+
+  // Add useEffect for intersection observer
+  useEffect(() => {
+    const techObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shouldStartCounting) {
+          setShouldStartCounting(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (techRef.current) {
+      techObserver.observe(techRef.current)
+    }
+
+    return () => techObserver.disconnect()
+  }, [shouldStartCounting])
 
   const serviceCategories = [
     {
@@ -72,18 +128,18 @@ const Services = () => {
   ]
 
   const technologies = [
-    { name: "React", category: "Frontend" },
-    { name: "Node.js", category: "Backend" },
-    { name: "Python", category: "Backend" },
-    { name: "MongoDB", category: "Database" },
-    { name: "PostgreSQL", category: "Database" },
-    { name: "AWS", category: "Cloud" },
-    { name: "Docker", category: "DevOps" },
-    { name: "Figma", category: "Design" },
-    { name: "Adobe Creative Suite", category: "Design" },
-    { name: "React Native", category: "Mobile" },
-    { name: "Flutter", category: "Mobile" },
-    { name: "Next.js", category: "Frontend" }
+    { name: "React", category: "Frontend", projects: 45 },
+    { name: "Node.js", category: "Backend", projects: 38 },
+    { name: "Python", category: "Backend", projects: 25 },
+    { name: "MongoDB", category: "Database", projects: 30 },
+    { name: "PostgreSQL", category: "Database", projects: 28 },
+    { name: "AWS", category: "Cloud", projects: 35 },
+    { name: "Docker", category: "DevOps", projects: 20 },
+    { name: "Figma", category: "Design", projects: 50 },
+    { name: "Adobe Creative Suite", category: "Design", projects: 40 },
+    { name: "React Native", category: "Mobile", projects: 20 },
+    { name: "Flutter", category: "Mobile", projects: 15 },
+    { name: "Next.js", category: "Frontend", projects: 30 }
   ]
 
   const pricingPlans = [
@@ -328,20 +384,25 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {technologies.map((tech, index) => (
-              <div
-                key={tech.name}
-                className="group relative transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="bg-card/80 backdrop-blur-lg rounded-xl p-4 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
-                  <div className="font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300 mb-1">
-                    {tech.name}
+          <div ref={techRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {technologies.map((tech, index) => {
+              const animatedCount = useCountUp(tech.projects, 1500 + index * 100, shouldStartCounting)
+              
+              return (
+                <div
+                  key={tech.name}
+                  className="group relative transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="bg-card/80 backdrop-blur-lg rounded-xl p-4 shadow-3d-light border border-border/20 hover:shadow-glow transition-all duration-300 text-center">
+                    <div className="font-bold text-foreground group-hover:text-nav-item-hover transition-colors duration-300 mb-1">
+                      {tech.name}
+                    </div>
+                    <div className="text-xs text-muted-foreground mb-1">{tech.category}</div>
+                    <div className="text-sm text-nav-item-hover font-medium tabular-nums">{animatedCount} projects</div>
                   </div>
-                  <div className="text-xs text-muted-foreground">{tech.category}</div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
