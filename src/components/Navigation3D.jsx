@@ -18,7 +18,7 @@ const Navigation3D = () => {
     }
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+      setScrolled(window.scrollY > 20)
     }
 
     checkMobile()
@@ -99,7 +99,11 @@ const Navigation3D = () => {
     <nav className="relative z-50">
       {/* Main Navigation Bar */}
       <div
-        className={`bg-gradient-nav backdrop-blur-sm border-b border-border/20 shadow-3d-medium transition-all duration-300 ${scrolled ? "bg-nav-bg/95" : "bg-gradient-nav"}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "bg-nav-bg/80 backdrop-blur-md border-b border-border/30 shadow-3d-medium" 
+            : "bg-nav-bg/60 backdrop-blur-sm border-b border-border/20 shadow-3d-light"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -137,8 +141,10 @@ const Navigation3D = () => {
                         transform hover:scale-105 hover:-translate-y-0.5
                         ${
                           isActive(item.href) || activeDropdown === item.label
-                            ? "bg-nav-item-hover text-primary-foreground shadow-3d-light"
-                            : "text-foreground hover:bg-nav-item-hover/10 hover:text-nav-item-hover"
+                            ? "bg-nav-item-hover text-primary-foreground shadow-3d-medium"
+                            : `text-foreground hover:bg-nav-item-hover/20 hover:text-nav-item-hover ${
+                              scrolled ? 'hover:backdrop-blur-sm' : ''
+                            }`
                         }
                         before:absolute before:inset-0 before:rounded-lg before:bg-gradient-hover
                         before:opacity-0 before:transition-opacity before:duration-300

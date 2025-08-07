@@ -163,7 +163,7 @@ const Services = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <Navigation3D />
       
       {/* Hero Section */}

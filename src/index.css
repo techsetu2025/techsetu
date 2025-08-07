@@ -360,6 +360,23 @@ All colors MUST be HSL for consistency.
     transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px);
   }
 
+  /* Enhanced Card Hover Effects */
+  .hover-slide-right {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .hover-slide-right:hover {
+    transform: translateX(8px);
+  }
+
+  .hover-slide-left {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .hover-slide-left:hover {
+    transform: translateX(-8px);
+  }
+
   /* Glass Morphism Effects */
   .glass-card {
     background: rgba(255, 255, 255, 0.1);
@@ -371,6 +388,12 @@ All colors MUST be HSL for consistency.
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Fixed navbar blur effect */
+  .navbar-blur {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   /* Responsive 3D Effects */
@@ -420,6 +443,7 @@ All colors MUST be HSL for consistency.
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    padding-top: 0; /* Remove default padding since we'll handle it per page */
   }
 
   /* Smooth scrolling */

@@ -115,8 +115,8 @@ const TechSetuHero = () => {
           >
             <div className="relative perspective-1000">
               {/* Main 3D Card */}
-              <div className="relative transform rotate-y-12 hover:rotate-y-6 transition-transform duration-500">
-                <div className="bg-gradient-to-br from-card/80 to-secondary/40 backdrop-blur-lg rounded-2xl p-8 shadow-3d-heavy border border-border/20 hover:shadow-glow transition-all duration-300">
+              <div className="relative transform rotate-y-12 hover:rotate-y-6 transition-transform duration-500 group">
+                <div className="bg-gradient-to-br from-card/80 to-secondary/40 backdrop-blur-lg rounded-2xl p-8 shadow-3d-heavy border border-border/20 hover:shadow-glow transition-all duration-300 group-hover:translate-x-2">
                   <div className="space-y-6">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center shadow-3d-light">
@@ -132,13 +132,17 @@ const TechSetuHero = () => {
                       {["Custom Software", "UI/UX Design", "Web Development"].map((service, index) => (
                         <div
                           key={service}
-                          className="flex items-center space-x-3 p-3 bg-background/20 rounded-lg border border-border/10"
+                          className="flex items-center justify-between p-3 bg-background/20 rounded-lg border border-border/10 group-hover:translate-x-1 transition-transform duration-300"
+                          style={{ transitionDelay: `${index * 50}ms` }}
                         >
-                          <div
-                            className="w-2 h-2 bg-nav-item-hover rounded-full animate-pulse"
-                            style={{ animationDelay: `${index * 200}ms` }}
-                          />
-                          <span className="text-foreground font-medium">{service}</span>
+                          <div className="flex items-center space-x-3">
+                            <div
+                              className="w-2 h-2 bg-nav-item-hover rounded-full animate-pulse"
+                              style={{ animationDelay: `${index * 200}ms` }}
+                            />
+                            <span className="text-foreground font-medium">{service}</span>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-nav-item-hover opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1" />
                         </div>
                       ))}
                     </div>
@@ -154,13 +158,6 @@ const TechSetuHero = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-nav-item-hover rounded-full mt-2 animate-pulse" />
         </div>
       </div>
     </section>
