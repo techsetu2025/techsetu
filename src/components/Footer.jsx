@@ -1,4 +1,23 @@
-import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from 'lucide-react'
+"use client"
+
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Github,
+  Linkedin,
+  Twitter,
+  Home,
+  User,
+  Briefcase,
+  FolderOpen,
+  MessageCircle,
+  Code,
+  Palette,
+  Globe,
+  Smartphone,
+  Users,
+} from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const Footer = () => {
@@ -6,19 +25,19 @@ const Footer = () => {
   const navigate = useNavigate()
 
   const quickLinks = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "Contact", href: "/contact" },
+    { label: "Home", href: "/", icon: <Home className="w-4 h-4" /> },
+    { label: "About Us", href: "/about", icon: <User className="w-4 h-4" /> },
+    { label: "Services", href: "/services", icon: <Briefcase className="w-4 h-4" /> },
+    { label: "Portfolio", href: "/portfolio", icon: <FolderOpen className="w-4 h-4" /> },
+    { label: "Contact", href: "/contact", icon: <MessageCircle className="w-4 h-4" /> },
   ]
 
   const services = [
-    { label: "Custom Software", href: "/services" },
-    { label: "UI/UX Design", href: "/services" },
-    { label: "Web Development", href: "/services" },
-    { label: "Mobile Apps", href: "/services" },
-    { label: "Consulting", href: "/services" },
+    { label: "Custom Software", href: "/services", icon: <Code className="w-4 h-4" /> },
+    { label: "UI/UX Design", href: "/services", icon: <Palette className="w-4 h-4" /> },
+    { label: "Web Development", href: "/services", icon: <Globe className="w-4 h-4" /> },
+    { label: "Mobile Apps", href: "/services", icon: <Smartphone className="w-4 h-4" /> },
+    { label: "Consulting", href: "/services", icon: <Users className="w-4 h-4" /> },
   ]
 
   const socialLinks = [
@@ -42,8 +61,8 @@ const Footer = () => {
             {/* Company Info */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
-                <div className="w-12 h-12 bg-gradient-button rounded-lg shadow-3d-light flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-xl">TS</span>
+                <div className="w-12 h-12 rounded-lg bg-white/95 backdrop-blur-sm shadow-3d-light flex items-center justify-center p-1.5">
+                  <img src="/tech-setu-logo.png" alt="Tech Setu Logo" className="w-full h-full object-contain" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-2xl font-bold text-foreground">TECH SETU</span>
@@ -51,30 +70,30 @@ const Footer = () => {
                 </div>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed max-w-md">
+              <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                 We are launched to bring your digital ideas to life. Let us bridge the gap between your vision and
                 reality with reliable, fast delivery, and professional solutions.
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <a 
+                <a
                   href="mailto:techsetu2025@gmail.com"
                   className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300"
                 >
                   <Mail className="w-4 h-4" />
-                  <span className="text-sm">techsetu2025@gmail.com</span>
+                  <span className="text-base">techsetu2025@gmail.com</span>
                 </a>
-                <a 
+                <a
                   href="tel:+918347991132"
                   className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300"
                 >
                   <Phone className="w-4 h-4" />
-                  <span className="text-sm">+91 8347991132</span>
+                  <span className="text-base">+91 8347991132</span>
                 </a>
                 <div className="flex items-center space-x-3 text-muted-foreground hover:text-nav-item-hover transition-colors duration-300">
                   <MapPin className="w-4 h-4" />
-                  <span className="text-sm">Tech Hub, Innovation District, Bangalore</span>
+                  <span className="text-base">Tech Hub, Innovation District, Bangalore</span>
                 </div>
               </div>
 
@@ -95,15 +114,19 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-foreground">Quick Links</h3>
+              <h3 className="text-xl font-bold text-foreground">Quick Links</h3>
               <div className="space-y-3">
                 {quickLinks.map((link) => (
                   <button
                     key={link.label}
                     onClick={() => navigate(link.href)}
-                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm text-left"
+                    className="group flex items-center text-muted-foreground hover:text-nav-item-hover transition-all duration-300 text-base text-left relative w-full"
                   >
-                    {link.label}
+                    <span className="absolute left-0 top-1/2 transform -translate-y-1/2 w-0 h-0.5 bg-nav-item-hover transition-all duration-300 group-hover:w-4 opacity-0 group-hover:opacity-100"></span>
+                    <div className="flex items-center space-x-3 transition-transform duration-300 group-hover:translate-x-6 ml-0">
+                      {link.icon}
+                      <span>{link.label}</span>
+                    </div>
                   </button>
                 ))}
               </div>
@@ -111,15 +134,19 @@ const Footer = () => {
 
             {/* Services */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-foreground">Our Services</h3>
+              <h3 className="text-xl font-bold text-foreground">Our Services</h3>
               <div className="space-y-3">
                 {services.map((service) => (
                   <button
                     key={service.label}
                     onClick={() => navigate(service.href)}
-                    className="block text-muted-foreground hover:text-nav-item-hover transition-colors duration-300 text-sm text-left"
+                    className="group flex items-center text-muted-foreground hover:text-nav-item-hover transition-all duration-300 text-base text-left relative w-full"
                   >
-                    {service.label}
+                    <span className="absolute left-0 top-1/2 transform -translate-y-1/2 w-0 h-0.5 bg-nav-item-hover transition-all duration-300 group-hover:w-4 opacity-0 group-hover:opacity-100"></span>
+                    <div className="flex items-center space-x-3 transition-transform duration-300 group-hover:translate-x-6 ml-0">
+                      {service.icon}
+                      <span>{service.label}</span>
+                    </div>
                   </button>
                 ))}
               </div>
@@ -130,10 +157,10 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-border/20 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-base text-muted-foreground">
               © {currentYear} Tech Setu IT Company. All rights reserved.
             </div>
-            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-6 text-base text-muted-foreground">
               <a href="#" className="hover:text-nav-item-hover transition-colors duration-300">
                 Privacy Policy
               </a>

@@ -2,15 +2,62 @@
 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowRight, Sparkles, Zap, Code, Target, Users, Clock } from 'lucide-react'
+import { ArrowRight, Sparkles, Zap, Code, Target, Users, Clock } from "lucide-react"
 
 const TechSetuHero = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }) // Added state for tracking mouse position and hover
+  const [isCardHovered, setIsCardHovered] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+
+    setMousePosition({
+      x: e.clientX - centerX,
+      y: e.clientY - centerY,
+    })
+  }
+
+  const handleMouseEnter = () => {
+    setIsCardHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsCardHovered(false)
+    setMousePosition({ x: 0, y: 0 })
+  }
+
+  const getCardTransform = () => {
+    if (!isCardHovered) {
+      return "rotateX(0deg) rotateY(0deg)"
+    }
+
+    const maxTilt = 8 // Reduced from 15 to 8
+    const tiltX = (mousePosition.y / 300) * maxTilt // Increased divisor from 200 to 300 for gentler movement
+    const tiltY = (mousePosition.x / 300) * maxTilt // Increased divisor from 200 to 300 for gentler movement
+
+    return `rotateX(${-tiltX}deg) rotateY(${tiltY}deg)` // Removed the initial 12deg rotation
+  }
+
+  const getCardTranslation = () => {
+    if (!isCardHovered) {
+      return "translate3d(0, 0, 0)"
+    }
+
+    const maxMove = 4 // Reduced from 8 to 4
+    const moveX = (mousePosition.x / 300) * maxMove // Increased divisor from 200 to 300
+    const moveY = (mousePosition.y / 300) * maxMove // Increased divisor from 200 to 300
+
+    return `translate3d(${moveX}px, ${moveY}px, 0)`
+  }
 
   return (
     <section
@@ -90,7 +137,7 @@ const TechSetuHero = () => {
             <div
               className={`flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 transition-all duration-1000 delay-600 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
             >
-              <button 
+              <button
                 onClick={() => navigate("/contact")}
                 className="group relative px-8 py-4 bg-gradient-button rounded-lg font-semibold text-primary-foreground shadow-3d-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
@@ -99,7 +146,7 @@ const TechSetuHero = () => {
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
 
-              <button 
+              <button
                 onClick={() => navigate("/portfolio")}
                 className="group px-8 py-4 bg-secondary/50 backdrop-blur-sm rounded-lg font-semibold text-foreground border border-border/20 shadow-3d-light hover:shadow-glow hover:bg-nav-item-hover/10 hover:text-nav-item-hover transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center space-x-2"
               >
@@ -115,8 +162,18 @@ const TechSetuHero = () => {
           >
             <div className="relative perspective-1000">
               {/* Main 3D Card */}
-              <div className="relative transform rotate-y-12 hover:rotate-y-6 transition-transform duration-500 group">
-                <div className="bg-gradient-to-br from-card/80 to-secondary/40 backdrop-blur-lg rounded-2xl p-8 shadow-3d-heavy border border-border/20 hover:shadow-glow transition-all duration-300 group-hover:translate-x-2">
+              <div
+                className="relative transition-transform duration-300 ease-out group cursor-pointer"
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  transform: `${getCardTransform()} ${getCardTranslation()}`,
+                  transformStyle: "preserve-3d",
+                  transition: "transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
+              >
+                <div className="bg-gradient-to-br from-card/80 to-secondary/40 backdrop-blur-lg rounded-2xl p-8 shadow-3d-heavy border border-border/20 hover:shadow-glow transition-all duration-300">
                   <div className="space-y-6">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-gradient-button rounded-lg flex items-center justify-center shadow-3d-light">

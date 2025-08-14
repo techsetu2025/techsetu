@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { ChevronDown, Home, Settings, Users, Mail, Smartphone, Globe, Database } from 'lucide-react'
+import { ChevronDown, Home, Settings, Users, Mail, Smartphone, Globe, Database } from "lucide-react"
 
 const Navigation3D = () => {
   const [activeDropdown, setActiveDropdown] = useState(null)
@@ -90,7 +90,7 @@ const Navigation3D = () => {
     setMobileMenuOpen(false)
     setActiveDropdown(null)
     // Scroll to top when navigating to a new page
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   const isActive = (href) => {
@@ -102,8 +102,8 @@ const Navigation3D = () => {
       {/* Main Navigation Bar */}
       <div
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled 
-            ? "bg-nav-bg/80 backdrop-blur-md border-b border-border/30 shadow-3d-medium" 
+          scrolled
+            ? "bg-nav-bg/80 backdrop-blur-md border-b border-border/30 shadow-3d-medium"
             : "bg-nav-bg/60 backdrop-blur-sm border-b border-border/20 shadow-3d-light"
         }`}
       >
@@ -113,8 +113,8 @@ const Navigation3D = () => {
             <div className="flex-shrink-0">
               <div className="flex items-center space-x-3 cursor-pointer" onClick={() => handleNavigation("/")}>
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-button rounded-lg shadow-3d-light flex items-center justify-center animate-glow transform hover:scale-110 transition-transform duration-300">
-                    <span className="text-primary-foreground font-bold text-xl">TS</span>
+                  <div className="w-10 h-10 rounded-lg bg-white/95 backdrop-blur-sm shadow-3d-light flex items-center justify-center animate-glow transform hover:scale-110 transition-transform duration-300 p-1">
+                    <img src="/tech-setu-logo.png" alt="Tech Setu Logo" className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -145,8 +145,8 @@ const Navigation3D = () => {
                           isActive(item.href) || activeDropdown === item.label
                             ? "bg-nav-item-hover text-primary-foreground shadow-3d-medium"
                             : `text-foreground hover:bg-nav-item-hover/20 hover:text-nav-item-hover ${
-                              scrolled ? 'hover:backdrop-blur-sm' : ''
-                            }`
+                                scrolled ? "hover:backdrop-blur-sm" : ""
+                              }`
                         }
                         before:absolute before:inset-0 before:rounded-lg before:bg-gradient-hover
                         before:opacity-0 before:transition-opacity before:duration-300
